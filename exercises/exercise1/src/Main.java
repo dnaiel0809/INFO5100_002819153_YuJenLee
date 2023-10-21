@@ -4,25 +4,30 @@ import java.util.List;
 import java.util.Random;
 
 class Student {
-    private String name;
-    private List<Integer> quizScores;
+    protected String name;
+    protected List<Integer> quizScores;
 
     public Student(String name) {
+
         this.name = name;
         this.quizScores = new ArrayList<>();
         Random random = new Random();
+//        System.out.println(name);
         for (int i = 0; i < 15; i++) {
             quizScores.add(random.nextInt(101));
+//            System.out.println("Quiz"+i +": "+ quizScores.get(i));
         }
     }
 
-//    public String getName() {
-//        return name;
-//    }
+    public String getName() {
+        return name;
+    }
 
-//    public List<Integer> getQuizScores() {
-//        return quizScores;
-//    }
+    public List<Integer> getQuizScores() {
+        return quizScores;
+    }
+
+
 }
 
 class FullTimeStudent extends Student {
@@ -31,8 +36,11 @@ class FullTimeStudent extends Student {
     public FullTimeStudent(String name) {
         super(name);
         Random random = new Random();
+        this.examScores = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             examScores.add(random.nextInt(101));
+//            System.out.println("Exam" + i +": "+ examScores.get(i));
+
         }
     }
 
@@ -49,63 +57,89 @@ class PartTimeStudent extends Student {
 }
 
 class Session {
-    private List<Student> students;
+    private List<FullTimeStudent> fullTimeStudents = new ArrayList<>();
+    private List<PartTimeStudent> partTimeStudents = new ArrayList<>();
 
-    public Session(List<Student> students) {
-        this.students = students;
+    public void addStudent(FullTimeStudent student) {
+        fullTimeStudents.add(student);
+    }
+
+    public void addStudent(PartTimeStudent student) {
+        partTimeStudents.add(student);
+    }
+
+    public void fullTimeStudentsScores() {
+        for (FullTimeStudent fullTimestudent : fullTimeStudents) {
+            System.out.println(fullTimestudent.getName() + "'s exam score: " + fullTimestudent.getExamScores().get(0) + ", " + fullTimestudent.getExamScores().get(1));
+        }
+    }
+
+    public void partTimeStudentsNames() {
+        for (PartTimeStudent partTimestudent : partTimeStudents) {
+            System.out.println(partTimestudent.getName());
+        }
     }
 
     public void calculateAndPrintAverageQuizScores() {
-        for (Student student : students) {
-            double average = student.getQuizScores().stream().mapToDouble(Integer::doubleValue).average().orElse(0);
-            System.out.println(student.getName() + "'s average quiz score: " + average);
+        for (FullTimeStudent fullTimestudent : fullTimeStudents) {
+            double average = fullTimestudent.getQuizScores().stream().mapToDouble(d -> d).average().orElse(0);
+            System.out.println(fullTimestudent.getName() + "'s average quiz score: " + average);
+        }
+        for (PartTimeStudent partTimestudent : partTimeStudents) {
+            double average = partTimestudent.getQuizScores().stream().mapToDouble(d -> d).average().orElse(0);
+            System.out.println(partTimestudent.getName() + "'s average quiz score: " + average);
         }
     }
 
     public void printQuizScoresInAscendingOrder() {
-        for (Student student : students) {
-            List<Integer> quizScores = student.getQuizScores();
-            Collections.sort(quizScores);
-            System.out.println(student.getName() + "'s quiz scores in ascending order: " + quizScores);
+        List<Integer> quizScores = new ArrayList<>();
+        for (FullTimeStudent fullTimestudent : fullTimeStudents) {
+            for (int i = 0; i < fullTimestudent.getQuizScores().size(); i++)
+                quizScores.add(fullTimestudent.getQuizScores().get(i));
         }
+        for(PartTimeStudent partTimestudent :partTimeStudents){
+            for (int i = 0; i < partTimestudent.getQuizScores().size(); i++)
+                quizScores.add(partTimestudent.getQuizScores().get(i));
+        }
+        Collections.sort(quizScores);
+        System.out.println("Quiz scores in ascending order: " + quizScores);
     }
 
-    public void printPartTimeStudentNames() {
-        System.out.print("Part-Time Student Names: ");
-        for (Student student : students) {
-            if (student instanceof PartTimeStudent) {
-                System.out.print(student.getName() + ", ");
-            }
-        }
-        System.out.println();
-    }
 
-    public void printFullTimeStudentExamScores() {
-        for (Student student : students) {
-            if (student instanceof FullTimeStudent) {
-                List<Integer> examScores = ((FullTimeStudent) student).getExamScores();
-                System.out.println(student.getName() + "'s exam scores: " + examScores);
-            }
-        }
-    }
 }
+
+
 
 public class Main {
     public static void main(String[] args) {
-        String[] studentsName = {"Dale Harrington", "Aneesa Mcmahon", "Osman Yang", "Louis Houston", "Kira Patterson", "Isabelle Owen", "Nathanael Rojas", "Millie Villa", "Ruth Moyer", "Arran Campbell", "Adelaide Cannon", "Gordon Gillespie", "Rico Ruiz", "Christian Henderson", "Antonia Lam", "Colby Heath", "Steve Rosales", "Kobe Andersen", "Gracie Mullen", "Cassius Hahn"};
-//        List<Student> students = new ArrayList<>();
-//        students.add(new PartTimeStudent("Alice"));
-//        students.add(new FullTimeStudent("Bob", List.of(85, 92)));
-//        students.add(new PartTimeStudent("Charlie"));
-//        students.add(new FullTimeStudent("David", List.of(78, 89)));
-        // Add more students as needed
-
-        Session session = new Session(students);
+        String[] fullTimeStudentsName = {"Dale Harrington", "Aneesa Mcmahon", "Osman Yang", "Louis Houston", "Kira Patterson", "Isabelle Owen", "Nathanael Rojas"};
+        String[] partTimeStudentsName= {"Millie Villa", "Ruth Moyer", "Arran Campbell", "Adelaide Cannon", "Gordon Gillespie", "Rico Ruiz", "Christian Henderson", "Antonia Lam", "Colby Heath", "Steve Rosales", "Kobe Andersen", "Gracie Mullen", "Cassius Hahn"};
 
 
+        Session session = new Session();
+        for (String s : fullTimeStudentsName) {
+            session.addStudent(new FullTimeStudent(s));
+        }
+        for (String s : partTimeStudentsName) {
+            session.addStudent(new PartTimeStudent(s));
+        }
+
+
+        System.out.println("Create public methods to calculate average quiz scores per student for the whole class.");
         session.calculateAndPrintAverageQuizScores();
+        System.out.println();
+
+        System.out.println("Create public method to print the list of quiz scores in ascending order for one session.");
         session.printQuizScoresInAscendingOrder();
-        session.printPartTimeStudentNames();
-        session.printFullTimeStudentExamScores();
+        System.out.println();
+
+        System.out.println("Create public method to print names of part-time students.");
+        session.partTimeStudentsNames();
+        System.out.println();
+
+        System.out.println("Create public method to print exam scores of full-time students.");
+        session.fullTimeStudentsScores();
+
+
     }
 }
