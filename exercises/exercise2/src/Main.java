@@ -14,9 +14,7 @@ abstract class Shape{
         System.out.println(color);
     }
 
-    public void setColor(String color) {
-        this.color=color;
-    }
+
 };
 class Triangle extends Shape{
     Triangle(double h, double w){
@@ -86,11 +84,23 @@ public class Main {
         Circle circle = new Circle(5);
 
         triangle.getColor();
-        rectangle.setColor("red");
         square.getColor();
+        System.out.println("Circle area:");
         System.out.println(circle.calculateArea());
+        System.out.println("Circle perimeter:");
+        System.out.println(circle.calculatePerimeter());
+        System.out.println("Square area:");
         System.out.println(square.calculateArea());
+        System.out.println("Square perimeter:");
+        System.out.println(square.calculatePerimeter());
+        System.out.println("Triangle area:");
+        System.out.println(triangle.calculateArea());
+        System.out.println("Triangle perimeter:");
         System.out.println(triangle.calculatePerimeter());
+        System.out.println("Rectangle area:");
+        System.out.println(rectangle.calculateArea());
+        System.out.println("Rectangle perimeter:");
         System.out.println(rectangle.calculatePerimeter());
+
     }
 }
