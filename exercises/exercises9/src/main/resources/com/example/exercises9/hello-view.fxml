@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.exercises9.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+
+    <HBox alignment="CENTER" spacing="20.0">
+        <Button fx:id="plus" text="+" onAction="#onButtonPlus"/>
+        <Button fx:id="min" text="-" onAction="#onButtonMin"/>
+    </HBox>
+    <HBox alignment="CENTER" spacing="20.0">
+        <Button fx:id="time" text="*" onAction="#onButtonTime"/>
+        <Button fx:id="divide" text="/"  onAction="#onButtonDivide"/>
+    </HBox>
+    <HBox alignment="CENTER" spacing="20.0">
+        <TextField fx:id="pre" layoutX="50.0" layoutY="8.0" />
+        <TextField fx:id="fix" layoutX="50.0" layoutY="8.0" />
+    </HBox>
+    <Label fx:id="result"/>
+    <Button fx:id="clear" text="clear" onAction="#onButtonClear"/>
+</VBox>
